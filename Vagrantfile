@@ -23,7 +23,7 @@ BOX = 'SLE12-SP2'
 INSTALLATION = 'salt'
 
 # Set CONFIGURATION to one of 'default', 'small', 'iscsi' or 'economical'
-CONFIGURATION = 'small'
+CONFIGURATION = 'default'
 
 raise "Box #{BOX} missing from config.yml" unless config[BOX]
 raise "Installation #{INSTALLATION} missing for box #{BOX} from config.yml" unless config[BOX][INSTALLATION]
@@ -58,8 +58,8 @@ def provisioning(hosts, node, config, name)
       # Allow passwordless root access between nodes
       keys = Vagrant::Keys.new(node, config[CONFIGURATION]['nodes'].keys)
       if (name == 'admin') then
-          puts "authorize dummy"
-          #keys.authorize 
+         # puts "authorize dummy"
+          keys.authorize 
       end
 
       # Add missing repos

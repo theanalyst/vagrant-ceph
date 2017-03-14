@@ -408,7 +408,84 @@ openSUSE-42.1:
         - systemctl enable salt-master
 
 ########################################
-# SLE 12 SP2
+# SLE 12 SP2 SES54
+########################################
+SLE12-SP2-SES5:
+  openattic:
+    repos:
+      'OpenAttic': 'http://download.opensuse.org/repositories/filesystems:/openATTIC/SLE_12_SP2/'
+      'sle-sdk': 'http://download.suse.de/ibs/SUSE/Products/SLE-SDK/12-SP2/x86_64/product/'
+      'sle-sdk update': 'http://download.suse.de/ibs/SUSE/Updates/SLE-SDK/12-SP2/x86_64/update/'
+      'SLE 12 update': 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP2/x86_64/product/'
+      'Storage': 'http://download.suse.de/ibs/SUSE:/SLE-12-SP2:/Update:/Products:/SES5/standard/'
+    packages:
+      admin:
+        #- monitoring-plugins-http
+        #- monitoring-plugins-swap
+        #- monitoring-plugins-ssh
+        #- monitoring-plugins-ping
+        #- monitoring-plugins-disk
+        - pnp4nagios-0.6.25-8.3
+        - openattic
+        - openattic-gui
+      all:
+        - vim
+        - vim-data
+        - man
+    files:
+      admin: true
+    commands:
+      admin:
+        - ln -s /etc/icinga /etc/nagios3
+        - ln -s /etc/icinga/icinga.cfg /etc/icinga/nagios.cfg
+        - ln -s /usr/sbin/icinga /usr/sbin/nagios
+        - systemctl enable apache2
+        - systemctl start apache2
+        - oaconfig install --allow-broken-hostname
+  salt:
+    repos:
+      'sle-sdk': 'http://download.suse.de/ibs/SUSE/Products/SLE-SDK/12-SP2/x86_64/product/'
+      'sle-sdk update': 'http://download.suse.de/ibs/SUSE/Updates/SLE-SDK/12-SP2/x86_64/update/'
+      'SLE 12 update': 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP2/x86_64/product/'
+      'Salt': 'http://download.opensuse.org/repositories/systemsmanagement:/saltstack:/products/SLE_12_SP2/'
+      'Storage': 'http://download.suse.de/ibs/SUSE:/SLE-12-SP2:/Update:/Products:/SES5/standard/'
+      'sle12updates': 'http://download.suse.de/ibs/SUSE:/SLE-12-SP2:/Update/standard/'
+    packages:
+      all:
+        - vim
+        - vim-data
+        - python-setuptools
+        - salt-minion
+      admin:
+        - salt-master
+        - ntp
+        - tree
+      client1:
+        - multipath-tools
+      client2:
+        - multipath-tools
+    files:
+      all: false
+      admin: true
+    commands:
+      admin:
+        - systemctl start ntpd
+        - systemctl enable ntpd
+        - systemctl start salt-master
+        - systemctl enable salt-master
+        - sleep 10
+        - salt-key -y -A  || exit 0
+        - chown -R salt:salt /srv/pillar/ceph /srv/salt/ceph 
+        - chmod 1777 /tmp
+      all:
+        - systemctl restart salt-minion
+        - systemctl enable salt-minion
+      calmari:
+        - systemctl start salt-master
+        - systemctl enable salt-master
+
+########################################
+# SLE 12 SP2 SES4
 ########################################
 SLE12-SP2:
   openattic:
@@ -447,8 +524,10 @@ SLE12-SP2:
       'sle-sdk': 'http://download.suse.de/ibs/SUSE/Products/SLE-SDK/12-SP2/x86_64/product/'
       'sle-sdk update': 'http://download.suse.de/ibs/SUSE/Updates/SLE-SDK/12-SP2/x86_64/update/'
       'SLE 12 update': 'http://download.suse.de/ibs/SUSE/Products/SLE-SERVER/12-SP2/x86_64/product/'
-      'Storage': 'http://download.suse.de/ibs/SUSE:/SLE-12-SP2:/Update:/Products:/SES5/standard/'
-      'Salt': 'http://download.opensuse.org/repositories/systemsmanagement:/saltstack/SLE_12_SP2'
+      'Storage': 'http://download.suse.de/ibs/SUSE:/SLE-12-SP2:/Update:/Products:/SES4/images/repo/SUSE-Enterprise-Storage-4-POOL-x86_64-Media1/'
+      'Salt': 'http://download.opensuse.org/repositories/systemsmanagement:/saltstack:/products/SLE_12_SP2/'
+      'ses4updates': 'http://download.suse.de/ibs/SUSE:/SLE-12-SP2:/Update:/Products:/SES4:/Update/standard/'
+      'sle12updates': 'http://download.suse.de/ibs/SUSE:/SLE-12-SP2:/Update/standard/'
     packages:
       all:
         - vim
@@ -474,7 +553,7 @@ SLE12-SP2:
         - systemctl enable salt-master
         - sleep 10
         - salt-key -y -A  || exit 0
-        - chown -R salt:salt /srv/pillar/ceph /srv/salt/ceph
+        - chown -R salt:salt /srv/pillar/ceph /srv/salt/ceph 
         - chmod 1777 /tmp
       all:
         - systemctl restart salt-minion
@@ -668,24 +747,24 @@ small:
   nodes:
     admin:
       management: 192.168.1.254
-      public:  172.16.1.254
-      cluster: 172.16.2.254
+      public:  172.16.21.254
+      cluster: 172.16.22.254
     mon1:
       management: 192.168.1.11
-      public:  172.16.1.11
-      cluster: 172.16.2.11
+      public:  172.16.21.11
+      cluster: 172.16.22.11
     data1:
       management: 192.168.1.21
-      public:  172.16.1.21
-      cluster: 172.16.2.21
+      public:  172.16.21.21
+      cluster: 172.16.22.21
     data2:
       management: 192.168.1.22
-      public:  172.16.1.22
-      cluster: 172.16.2.22
+      public:  172.16.21.22
+      cluster: 172.16.22.22
     data3:
       management: 192.168.1.23
-      public:  172.16.1.23
-      cluster: 172.16.2.23
+      public:  172.16.21.23
+      cluster: 172.16.22.23
   memory:
     admin: 1024
   disks:
