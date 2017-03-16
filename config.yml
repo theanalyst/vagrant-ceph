@@ -1207,3 +1207,80 @@ economical:
       hds: 4
     data4:
       hds: 4
+# The workshop config.
+# This requires 8G RAM and ~32G disk space.
+workshop:
+  description: "admin, 3 monitors, 6 data nodes with journals, 1 RGW node"
+  nodes:
+    admin:
+      management: 192.168.1.254
+      public:  172.16.1.254
+      cluster: 172.16.2.254
+    mon1:
+      management: 192.168.1.11
+      public:  172.16.1.11
+      cluster: 172.16.2.11
+    mon2:
+      management: 192.168.1.12
+      public:  172.16.1.12
+      cluster: 172.16.2.12
+    mon3:
+      management: 192.168.1.13
+      public:  172.16.1.13
+      cluster: 172.16.2.13
+    rgw:
+      management: 192.168.1.14
+      public: 172.16.1.14
+      cluster: 172.16.2.14
+    data1:
+      management: 192.168.1.21
+      public:  172.16.1.21
+      cluster: 172.16.2.21
+    data2:
+      management: 192.168.1.22
+      public:  172.16.1.22
+      cluster: 172.16.2.22
+    data3:
+      management: 192.168.1.23
+      public:  172.16.1.23
+      cluster: 172.16.2.23
+    data4:
+      management: 192.168.1.24
+      public:  172.16.1.24
+      cluster: 172.16.2.24
+    data5:
+      management: 192.168.1.25
+      public:  172.16.1.25
+      cluster: 172.16.2.25
+    data6:
+      management: 192.168.1.26
+      public:  172.16.1.26
+      cluster: 172.16.2.26
+  memory:
+    admin: 1024
+    data1: 1024
+    data2: 1024
+    data3: 1024
+    data4: 1024
+    data5: 1024
+    data6: 1024
+    rgw: 1024
+  disks:
+    data1:
+      hds: 5
+      ssds: 1
+    data2:
+      hds: 5
+      ssds: 1
+    data3:
+      hds: 5
+      ssds: 1
+    data4:
+      hds: 5
+      ssds: 1
+    data5:
+      hds: 5
+      ssds: 1
+    data6:
+      hds: 5
+      ssds: 1
